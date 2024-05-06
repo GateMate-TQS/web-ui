@@ -6,31 +6,6 @@ import logo from "../assets/logo.png";
 function AdminPage() {
   const [flightsInfo, setFlightsInfo] = useState(true);
   const [checkin, setCheckin] = useState(false);
-  const token = localStorage.getItem("token");
-
-  const handleLogout = async (token) => {
-    try {
-      const response = await fetch("http://localhost:8080/api/user/logout", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: token,
-        }),
-      });
-
-      if (response.status === 200) {
-        localStorage.removeItem("token");
-        window.location.href = "/";
-      } else if (response.status === 204) {
-        localStorage.removeItem("token");
-        window.location.href = "/";
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-    }
-  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -66,12 +41,7 @@ function AdminPage() {
           <div className="flex-none">
             <div className="menu menu-horizontal flex items-center">
               <div className="ml-2 text-2xl relative">
-                <button
-                  onClick={() => {
-                    handleLogout(token);
-                  }}
-                  className="block px-4 py-2 text-red-500 hover:bg-white rounded-md w-full text-left transition duration-300 ease-in-out"
-                >
+                <button className="block px-4 py-2 text-red-500 hover:bg-white rounded-md w-full text-left transition duration-300 ease-in-out">
                   Logout
                 </button>
               </div>
