@@ -6,6 +6,7 @@ import AllFlights from "./pages/AllFlights";
 import Flight from "./pages/Flight";
 import FlightTracker from "./pages/FlightTracker";
 import UserSubscribedFlights from "./pages/UserSubscribedFlights";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           path="/UserSubscribedFlights"
           Component={UserSubscribedFlights}
         ></Route>
+        <Route path="/admin" Component={AdminPage}></Route>
       </Routes>
     </BrowserRouter>
   );
