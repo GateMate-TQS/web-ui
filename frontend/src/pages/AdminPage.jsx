@@ -57,9 +57,21 @@ function AdminPage() {
               <div className="mb-10">
                 <h1 className="text-4xl bold">Flights Info</h1>
               </div>
-              <div className="mb-10">
-                <input type="text" className="border" />
-                <button>Search</button>
+              <div className="mb-10 flex flex-row">
+                <div className="w-1/5 mr-1">
+                  <input
+                    className="pl-2 appearance-none bg-gray-100 text-zinc-600 w-full h-10 text-xl font-normal outline-none inline-flex"
+                    type="text"
+                    name="flightIata"
+                    id="flightIata"
+                    placeholder=" Flight Iata"
+                  />
+                </div>
+                <div className="w-1/5 ml-1">
+                  <button className="w-full bg-blue-700 rounded justify-center items-center inline-flex px-12 py-2 text-center text-white text-base font-bold leading-normal">
+                    Search
+                  </button>
+                </div>
               </div>
               <div>
                 <div className="collapse collapse-arrow bg-base-200 mb-2">
