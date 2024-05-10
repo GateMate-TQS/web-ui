@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -114,12 +115,13 @@ function Flight(props) {
                 </div>
               </div>
               <div className="flex justify-center mb-10">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => handleSubscribe(token)}
+                <Link
+                  to={`/ticketPurchase/${flightInfo.iata}`}
+                  key={flightInfo.iata}
+                  state={{ flightIata: flightInfo.iata }}
                 >
-                  Buy Ticket
-                </button>
+                  <button className="btn btn-primary">Purchase Ticket</button>
+                </Link>
               </div>
             </div>
           )}
