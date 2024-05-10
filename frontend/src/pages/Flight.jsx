@@ -11,11 +11,31 @@ function Flight(props) {
   const location = useLocation();
   const flightIata = location.state?.flightIata;
   const token = localStorage.getItem("token");
-  const [flightInfo, setFlightInfo] = useState();
+  const [flightInfo, setFlightInfo] = useState({
+    flightIata: "AA123",
+    airlineName: "American Airlines",
+    departure: {
+      name: "Guarulhos International Airport",
+      terminal: "Terminal 3",
+      gate: "A1",
+      delay: "10 minutes",
+      scheduled: "2021-10-10T10:00:00",
+      estimated: "2021-10-10T10:10:00",
+      actual: "2021-10-10T10:10:00",
+      iata: "GRU",
+    },
+    arrival: {
+      name: "Miami International Airport",
+      terminal: "Terminal 1",
+      gate: "B2",
+      delay: "5 minutes",
+      scheduled: "2021-10-10T15:00:00",
+      estimated: "2021-10-10T15:05:00",
+      actual: "2021-10-10T15:05:00",
+      iata: "MIA",
+    },
+  });
   const [flightInfoNotFound, setflightInfoNotFound] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState();
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationText, setConfirmationText] = useState("");
 
   const fetchFlightInfo = async () => {
     try {
@@ -43,118 +63,9 @@ function Flight(props) {
     }
   };
 
-  const flightSubscribed = async (token) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/api/user/is_subscribed",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-            flightIata: flightIata,
-          }),
-        }
-      );
-
-      const responseContent = await response.text();
-      if (response.status === 200) {
-        console.log(responseContent);
-        setIsSubscribed(true);
-      } else if (response.status === 401) {
-        console.error(responseContent);
-        localStorage.removeItem("token");
-        setIsSubscribed(false);
-      } else if (response.status === 204) {
-        console.error(responseContent);
-        setIsSubscribed(false);
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-    }
-  };
-
-  useEffect(() => {
+  /* useEffect(() => {
     fetchFlightInfo();
-    flightSubscribed(token);
-  }, []);
-
-  // Função a ser executada quando o botão for clicado
-  const handleSubscribe = async (token) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/api/user/subscribe_flight",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-            flightIata: flightIata,
-          }),
-        }
-      );
-
-      const responseContent = await response.text();
-      if (response.status === 200) {
-        console.log(responseContent);
-        setConfirmationText(responseContent);
-        setIsSubscribed(true);
-      } else if (response.status === 401) {
-        console.error(responseContent);
-        localStorage.removeItem("token");
-        localStorage.setItem("invalidToken", true);
-        setIsSubscribed(false);
-        window.location.href = "/login";
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-    }
-
-    setShowConfirmation(true);
-  };
-
-  const handleUnsubscribe = async (token) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/api/user/unsubscribe_flight",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-            flightIata: flightIata,
-          }),
-        }
-      );
-
-      const responseContent = await response.text();
-      if (response.status === 200) {
-        console.log(responseContent);
-        setConfirmationText(responseContent);
-        setIsSubscribed(false);
-      } else if (response.status === 401) {
-        console.error(responseContent);
-        localStorage.removeItem("token");
-        setIsSubscribed(false);
-        localStorage.setItem("invalidToken", true);
-        window.location.href = "/login";
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-    }
-
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmationClose = () => {
-    setShowConfirmation(false);
-  };
+  }, []); */
 
   return (
     <>
@@ -190,44 +101,26 @@ function Flight(props) {
               <div>
                 <FlightInfo flight={flightInfo} />
               </div>
-              <div className="flex flex-row gap-10 mb-10">
+              <div className="flex flex-row justify-between gap-10 mb-10">
                 <div className="overflow-x-auto w-1/3 ml-10">
                   <p className="text-center text-4xl font-bold mb-5">
                     Departure
                   </p>
                   <FlightInfoTable flight={flightInfo.departure} />
                 </div>
-                <div className="overflow-x-auto w-1/3">
-                  <p className="text-center text-4xl font-bold mb-5">
-                    Live Data
-                  </p>
-                  <FlightLiveDataTable flight={flightInfo.liveData} />
-                </div>
                 <div className="overflow-x-auto w-1/3 mr-10">
                   <p className="text-center text-4xl font-bold mb-5">Arrival</p>
                   <FlightInfoTable flight={flightInfo.arrival} />
                 </div>
               </div>
-              {!isSubscribed && (
-                <div className="flex justify-center mb-10">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleSubscribe(token)}
-                  >
-                    Subscribe Flight
-                  </button>
-                </div>
-              )}
-              {isSubscribed && (
-                <div className="flex justify-center mb-10">
-                  <button
-                    className="btn btn-error"
-                    onClick={() => handleUnsubscribe(token)}
-                  >
-                    Unsubscribe Flight
-                  </button>
-                </div>
-              )}
+              <div className="flex justify-center mb-10">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleSubscribe(token)}
+                >
+                  Buy Ticket
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -235,14 +128,6 @@ function Flight(props) {
           <Footer />
         </div>
       </div>
-      {showConfirmation && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>{confirmationText}</p>
-            <button onClick={handleConfirmationClose}>Fechar</button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
