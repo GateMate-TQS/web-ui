@@ -29,7 +29,7 @@ function FlightTracker() {
             style={{ backgroundColor: "white", borderRadius: "10px" }}
           >
             <div>
-              <button className="text-blue-400" onClick={() => resetFilters()}>
+              <button className="text-blue-400">
                 <u>Reset all</u>
               </button>
             </div>
@@ -47,10 +47,6 @@ function FlightTracker() {
                   <input
                     type="text"
                     className="pl-2 appearance-none bg-gray-100 text-zinc-600 w-full h-10 text-xl font-normal outline-none"
-                    value={filter.company}
-                    onChange={(e) =>
-                      setFilter({ ...filter, company: e.target.value })
-                    }
                     placeholder="Enter Booking Reference Number"
                   />
                 </div>
@@ -64,10 +60,6 @@ function FlightTracker() {
                   <input
                     type="text"
                     className="pl-2 appearance-none bg-gray-100 text-zinc-600 w-full h-10 text-xl font-normal outline-none"
-                    value={filter.from}
-                    onChange={(e) =>
-                      setFilter({ ...filter, from: e.target.value })
-                    }
                     placeholder="Enter Last Name"
                   />
                 </div>
@@ -75,10 +67,7 @@ function FlightTracker() {
             </div>
 
             <div className="py-13">
-              <button
-                className="w-full bg-blue-700 rounded justify-center items-center inline-flex px-12 py-2 text-center text-white text-base font-bold leading-normal"
-                onClick={() => handleSearch()}
-              >
+              <button className="w-full bg-blue-700 rounded justify-center items-center inline-flex px-12 py-2 text-center text-white text-base font-bold leading-normal">
                 Continue
               </button>
             </div>
