@@ -89,57 +89,78 @@ function TicketPurchase() {
                       <table className="table-auto mx-auto border-collapse border border-gray-400">
                         <tbody>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Origin
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {ticket.origin}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Destination
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {ticket.destination}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Date
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {departureDay}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Departure Time
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {departureTime}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Arrival Time
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {arrivalTime}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Company
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {ticket.company}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-gray-400 px-4 py-2 font-bold">
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Price
-                            </td>
+                            </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {price} EUR
                             </td>
