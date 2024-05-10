@@ -44,14 +44,11 @@ function Navbar() {
       </div>
       <div className="flex-none">
         <div className="menu menu-horizontal flex items-center">
-        <div className="px-4 text-2xl">
+          <div className="px-4 text-2xl">
             <Link to="/check-in-online">Check-in</Link>
           </div>
           <div className="px-4 text-2xl">
             <Link to="/allflights">All Flights</Link>
-          </div>
-          <div className="px-4 text-2xl">
-            <Link to="/flighttracker">Flight Tracker</Link>
           </div>
           <div className="ml-2 text-2xl relative">
             {token && (
