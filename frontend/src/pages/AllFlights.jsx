@@ -6,8 +6,39 @@ import FlightCard from "../components/FlightCard";
 import image1 from "../assets/allflights/1.jpeg";
 
 function AllFlights() {
-  const [flights, setFlights] = useState([]);
-  const [flightsNotFound, setFlightsNotFound] = useState(true);
+  const [flights, setFlights] = useState([
+    {
+      flightIata: "AA123",
+      airlineName: "American Airlines",
+      departure: {
+        iata: "GRU",
+      },
+      arrival: {
+        iata: "MIA",
+      },
+    },
+    {
+      flightIata: "GOL456",
+      airlineName: "Gol Linhas Aéreas",
+      departure: {
+        iata: "GRU",
+      },
+      arrival: {
+        iata: "CGH",
+      },
+    },
+    {
+      flightIata: "AZUL789",
+      airlineName: "Azul Linhas Aéreas",
+      departure: {
+        iata: "GRU",
+      },
+      arrival: {
+        iata: "SDU",
+      },
+    },
+  ]);
+  const [flightsNotFound, setFlightsNotFound] = useState(false);
   const [flightsUrl, setFlightsUrl] = useState(
     "http://localhost:8080/api/allflights"
   );
@@ -35,13 +66,13 @@ function AllFlights() {
     }
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetchAllFlights(flightsUrl);
 
     const id = setInterval(() => fetchAllFlights(flightsUrl), 3000);
 
     return () => clearInterval(id);
-  }, [fetchAllFlights, flightsUrl]);
+  }, [fetchAllFlights, flightsUrl]); */
 
   const [filter, setFilter] = useState({
     flightIata: "",
