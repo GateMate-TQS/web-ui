@@ -16,6 +16,7 @@ function AllFlights() {
       arrival: {
         iata: "MIA",
       },
+      price: 100,
     },
     {
       flightIata: "GOL456",
@@ -26,6 +27,7 @@ function AllFlights() {
       arrival: {
         iata: "CGH",
       },
+      price: 50,
     },
     {
       flightIata: "AZUL789",
@@ -36,6 +38,7 @@ function AllFlights() {
       arrival: {
         iata: "SDU",
       },
+      price: 75,
     },
   ]);
   const [flightsNotFound, setFlightsNotFound] = useState(false);

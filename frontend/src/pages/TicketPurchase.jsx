@@ -39,6 +39,10 @@ function TicketPurchase() {
     }
   };
 
+  const submitForm = async (event) => {
+    window.location.href = "/PurchaseConfirmation";
+  };
+
   /* useEffect(() => {
     console.log(ticket);
     const urlParts = window.location.pathname.split("/");
@@ -181,7 +185,9 @@ function TicketPurchase() {
               </div>
             </div>
             <div className="text-center my-10">
-              <button className="btn btn-primary">Purchase Ticket</button>
+              <button className="btn btn-primary" onClick={submitForm}>
+                Purchase Ticket
+              </button>
             </div>
           </div>
         )}

@@ -8,6 +8,7 @@ import UserSubscribedFlights from "./pages/UserSubscribedFlights";
 import Checkin from "./pages/Checkin";
 import AdminPage from "./pages/AdminPage";
 import TicketPurchase from "./pages/TicketPurchase";
+import PurchaseConfirmation from "./pages/PurchaseConfirmation";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/flightInfo/:id" element={<Flight />} />
         <Route path="/check-in-online" Component={Checkin} />
         <Route path="/ticketPurchase/:id" element={<TicketPurchase />} />
+        <Route path="/PurchaseConfirmation" Component={PurchaseConfirmation} />
         <Route
           path="/UserSubscribedFlights"
           Component={UserSubscribedFlights}
