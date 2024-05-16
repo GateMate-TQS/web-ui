@@ -15,6 +15,7 @@ function Register() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "USER", // Default role is USER
   });
 
   const handleChange = (e) => {
@@ -24,23 +25,27 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.password !== formData.confirmPassword) {
+      setRegisterError("Passwords do not match.");
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:8080/api/user/register", {
+      const response = await fetch("http://localhost:8085/api/v1/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: formData.email,
+          login: formData.email,
           password: formData.password,
-          confirmPassword: formData.confirmPassword,
+          role: formData.role,
         }),
       });
 
       const responseContent = await response.text();
-      if (response.status === 200) {
-        localStorage.setItem("token", responseContent);
-        window.location.href = "/";
+      if (response.status === 201) {
+        window.location.href = "/login";
         setRegisterError(null);
       } else if (response.status === 400) {
         console.error(responseContent);
@@ -50,9 +55,10 @@ function Register() {
         setRegisterError(responseContent);
       }
     } catch (error) {
-      console.error("Erro:", error);
+      console.error("Error:", error);
     }
   };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div>
@@ -61,7 +67,11 @@ function Register() {
 
       <div className="flex-1">
         <div className="relative">
-          <img className="w-full h-96 object-cover" src={image1} />
+          <img
+            className="w-full h-96 object-cover"
+            src={image1}
+            alt="Register background"
+          />
           <div className="absolute inset-y-0 left-20 flex flex-col items-start justify-center">
             <div className="text-blue-800 text-8xl font-bold mb-4">
               Register
@@ -122,6 +132,21 @@ function Register() {
               required
             />
           </div>
+          <div className="mb-4">
+            <label htmlFor="role" className="block text-gray-700">
+              Role
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              <option value="USER">User</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+          </div>
           <div className="text-center">
             <span>
               Already have an account?{" "}
@@ -133,7 +158,7 @@ function Register() {
           <div className="w-full bg-teal-500 rounded-sm border border-teal-500 justify-start items-start inline-flex">
             <button
               type="submit"
-              className=" px-10 py-5  text-center text-white text-base font-normal w-full"
+              className="px-10 py-5 text-center text-white text-base font-normal w-full"
             >
               Register
             </button>

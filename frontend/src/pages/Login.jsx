@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import image1 from "../assets/login/1.jpeg";
+import Cookies from "js-cookie";
 
 function Login() {
   if (localStorage.getItem("token")) {
@@ -31,30 +32,34 @@ function Login() {
     setInvalidToken(null);
 
     try {
-      const response = await fetch("http://localhost:8080/api/user/login", {
+      const response = await fetch("http://localhost:8085/api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: formData.email,
+          login: formData.email,
           password: formData.password,
         }),
       });
 
-      const responseContent = await response.text();
+      const responseContent = await response.json();
       if (response.status === 200) {
-        localStorage.setItem("token", responseContent);
-        window.location.href = "/";
+        // Save token in cookies and localStorage
+        console.log(responseContent.accessToken);
+        Cookies.set("token", responseContent.accessToken);
+        localStorage.setItem("token", responseContent.accessToken);
         setLoginError(null);
+        window.location.href = "/";
       } else if (response.status === 401) {
         console.error(responseContent);
         setLoginError(responseContent);
       }
     } catch (error) {
-      console.error("Erro:", error);
+      console.error("Error:", error);
     }
   };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div>
