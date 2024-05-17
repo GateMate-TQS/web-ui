@@ -6,44 +6,10 @@ import FlightCard from "../components/FlightCard";
 import image1 from "../assets/allflights/1.jpeg";
 
 function AllFlights() {
-  const [flights, setFlights] = useState([
-    {
-      flightIata: "AA123",
-      airlineName: "American Airlines",
-      departure: {
-        iata: "GRU",
-      },
-      arrival: {
-        iata: "MIA",
-      },
-      price: 100,
-    },
-    {
-      flightIata: "GOL456",
-      airlineName: "Gol Linhas Aéreas",
-      departure: {
-        iata: "GRU",
-      },
-      arrival: {
-        iata: "CGH",
-      },
-      price: 50,
-    },
-    {
-      flightIata: "AZUL789",
-      airlineName: "Azul Linhas Aéreas",
-      departure: {
-        iata: "GRU",
-      },
-      arrival: {
-        iata: "SDU",
-      },
-      price: 75,
-    },
-  ]);
+  const [flights, setFlights] = useState([]);
   const [flightsNotFound, setFlightsNotFound] = useState(false);
   const [flightsUrl, setFlightsUrl] = useState(
-    "http://localhost:8080/api/allflights"
+    "http://localhost:8080/api/flight/flights"
   );
 
   const fetchAllFlights = useCallback(async (url) => {
@@ -55,6 +21,7 @@ function AllFlights() {
       const responseContent = await response.json();
       if (response.status === 200) {
         console.log("Flights found");
+        console.log(responseContent);
         setFlights(responseContent);
         setFlightsNotFound(false);
       } else if (response.status === 404) {
@@ -69,13 +36,13 @@ function AllFlights() {
     }
   }, []);
 
-  /* useEffect(() => {
+  useEffect(() => {
     fetchAllFlights(flightsUrl);
 
-    const id = setInterval(() => fetchAllFlights(flightsUrl), 3000);
+    /* const id = setInterval(() => fetchAllFlights(flightsUrl), 3000);
 
-    return () => clearInterval(id);
-  }, [fetchAllFlights, flightsUrl]); */
+    return () => clearInterval(id); */
+  }, [fetchAllFlights, flightsUrl]);
 
   const [filter, setFilter] = useState({
     flightIata: "",
@@ -91,12 +58,12 @@ function AllFlights() {
       to: "",
       company: "",
     });
-    setFlightsUrl("http://localhost:8080/api/allflights");
+    setFlightsUrl("http://localhost:8080/api/flight/flights");
     fetchAllFlights(flightsUrl);
   }
 
   async function handleSearch() {
-    var url = "http://localhost:8080/api/allflights?";
+    var url = "http://localhost:8080/api/flight/flights?";
     if (filter.from != "") {
       url += `from=${filter.from}&`;
     }
@@ -154,13 +121,13 @@ function AllFlights() {
                   From
                 </option>
                 {flights &&
-                  [
-                    ...new Set(flights.map((flight) => flight.departure.iata)),
-                  ].map((uniqueIata) => (
-                    <option key={uniqueIata} value={uniqueIata}>
-                      {uniqueIata}
-                    </option>
-                  ))}
+                  [...new Set(flights.map((flight) => flight.origin.iata))].map(
+                    (uniqueIata) => (
+                      <option key={uniqueIata} value={uniqueIata}>
+                        {uniqueIata}
+                      </option>
+                    )
+                  )}
               </select>
             </div>
 
@@ -175,7 +142,9 @@ function AllFlights() {
                 </option>
                 {flights &&
                   [
-                    ...new Set(flights.map((flight) => flight.arrival.iata)),
+                    ...new Set(
+                      flights.map((flight) => flight.destination.iata)
+                    ),
                   ].map((uniqueIata) => (
                     <option key={uniqueIata} value={uniqueIata}>
                       {uniqueIata}
@@ -195,7 +164,7 @@ function AllFlights() {
                   Company
                 </option>
                 {flights &&
-                  [...new Set(flights.map((flight) => flight.airlineName))].map(
+                  [...new Set(flights.map((flight) => flight.airline))].map(
                     (uniqueName) => (
                       <option key={uniqueName} value={uniqueName}>
                         {uniqueName}

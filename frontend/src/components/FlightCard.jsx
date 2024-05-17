@@ -8,7 +8,7 @@ function FlightCard({ flight }) {
       <div className="flex flex-col">
         <div className="mr-6">
           <h3 className="text-3xl font-semibold">
-            {flight.departure.iata} - {flight.arrival.iata}
+            {flight.origin.iata} - {flight.destination.iata}
           </h3>
         </div>
         <div className="mb-5">
@@ -16,7 +16,7 @@ function FlightCard({ flight }) {
         </div>
         <div className="flex flex-row items-center">
           <img src={plane} alt="Plane" />
-          <p className="text-base">{flight.airlineName}</p>
+          <p className="text-base">{flight.airline}</p>
         </div>
       </div>
       <div>
