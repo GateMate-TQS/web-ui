@@ -18,9 +18,12 @@ function App() {
         <Route path="/register" Component={Register} />
         <Route path="/login" Component={Login} />
         <Route path="/allflights" Component={AllFlights} />
-        <Route path="/flightInfo/:id" element={<Flight />} />
+        <Route path="/flightInfo/:flightIata" element={<Flight />} />
         <Route path="/check-in-online" Component={Checkin} />
-        <Route path="/ticketPurchase/:id" element={<TicketPurchase />} />
+        <Route
+          path="/ticketPurchase/:flightIata"
+          element={<TicketPurchase />}
+        />
         <Route path="/PurchaseConfirmation" Component={PurchaseConfirmation} />
         <Route
           path="/UserSubscribedFlights"

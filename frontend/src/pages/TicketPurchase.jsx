@@ -4,20 +4,11 @@ import Footer from "../components/Footer";
 import PurchaseForm from "../components/PurchaseForm";
 
 function TicketPurchase() {
-  const [ticket, setTicket] = useState({
-    id: 1,
-    origin: "GRU",
-    destination: "MIA",
-    departureTime: "2021-10-10T10:00:00",
-    arrivalTime: "2021-10-10T15:00:00",
-    company: "American Airlines",
-    price: 100,
-  });
+  const [ticket, setTicket] = useState();
   const [departureDay, setDepartureDay] = useState(null);
+  const [arrivalDay, setArrivalDay] = useState(null);
   const [departureTime, setDepartureTime] = useState(null);
   const [arrivalTime, setArrivalTime] = useState(null);
-  const [eurPrice, setEurPrice] = useState(null);
-  const [price, setPrice] = useState(null);
 
   const fetchTicket = async (url) => {
     try {
@@ -43,35 +34,30 @@ function TicketPurchase() {
     window.location.href = "/PurchaseConfirmation";
   };
 
-  /* useEffect(() => {
-    console.log(ticket);
+  useEffect(() => {
     const urlParts = window.location.pathname.split("/");
-    const id = urlParts[urlParts.length - 1];
+    const flightIata = urlParts[urlParts.length - 1];
 
-    const ticketUrl = `http://localhost:8080/api/tickets/${id}`;
+    const ticketUrl = `http://localhost:8080/api/flight/flights/${flightIata}`;
     fetchTicket(ticketUrl);
-
-    setCurrencySelected(localStorage.getItem("currency"));
-  }, []); */
+  }, []);
 
   useEffect(() => {
     if (ticket) {
-      const departureDate = new Date(ticket.departureTime);
+      const departureDate = new Date(ticket.origin.scheduled);
       const departureTime = departureDate.toLocaleTimeString("pt-PT");
       const departureDay = departureDate.toLocaleDateString("pt-PT");
 
-      const arrivalDate = new Date(ticket.arrivalTime);
+      const arrivalDate = new Date(ticket.destination.scheduled);
       const arrivalTime = arrivalDate.toLocaleTimeString("pt-PT");
-
-      const ticketPrice = ticket.price;
+      const arrivalDay = arrivalDate.toLocaleDateString("pt-PT");
 
       setDepartureDay(departureDay);
       setDepartureTime(departureTime);
       setArrivalTime(arrivalTime);
-      setEurPrice(ticketPrice);
-      setPrice(ticketPrice);
+      setArrivalDay(arrivalDay);
     }
-  }, [ticket, eurPrice]);
+  }, [ticket]);
   return (
     <div className="flex flex-col min-h-screen">
       <div>
@@ -100,7 +86,7 @@ function TicketPurchase() {
                               Origin
                             </th>
                             <td className="border border-gray-400 px-4 py-2">
-                              {ticket.origin}
+                              {ticket.origin.iata}
                             </td>
                           </tr>
                           <tr>
@@ -111,7 +97,7 @@ function TicketPurchase() {
                               Destination
                             </th>
                             <td className="border border-gray-400 px-4 py-2">
-                              {ticket.destination}
+                              {ticket.destination.iata}
                             </td>
                           </tr>
                           <tr>
@@ -119,7 +105,7 @@ function TicketPurchase() {
                               scope="col"
                               className="border border-gray-400 px-4 py-2 font-bold"
                             >
-                              Date
+                              Departure Date
                             </th>
                             <td className="border border-gray-400 px-4 py-2">
                               {departureDay}
@@ -141,6 +127,17 @@ function TicketPurchase() {
                               scope="col"
                               className="border border-gray-400 px-4 py-2 font-bold"
                             >
+                              Arrival Date
+                            </th>
+                            <td className="border border-gray-400 px-4 py-2">
+                              {arrivalDay}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th
+                              scope="col"
+                              className="border border-gray-400 px-4 py-2 font-bold"
+                            >
                               Arrival Time
                             </th>
                             <td className="border border-gray-400 px-4 py-2">
@@ -155,7 +152,7 @@ function TicketPurchase() {
                               Company
                             </th>
                             <td className="border border-gray-400 px-4 py-2">
-                              {ticket.company}
+                              {ticket.airline}
                             </td>
                           </tr>
                           <tr>
@@ -166,7 +163,7 @@ function TicketPurchase() {
                               Price
                             </th>
                             <td className="border border-gray-400 px-4 py-2">
-                              {price} EUR
+                              {ticket.price} EUR
                             </td>
                           </tr>
                         </tbody>

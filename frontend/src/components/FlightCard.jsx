@@ -22,9 +22,6 @@ function FlightCard({ flight }) {
       <div>
         <img src={arrow} alt="arrow" />
       </div>
-      <div className="absolute top-0 right-0 bg-yellow-200 p-2 rounded-bl">
-        <p className="text-sm">{flight.price} €</p>
-      </div>
     </div>
   );
 }
