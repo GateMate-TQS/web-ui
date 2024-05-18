@@ -9,7 +9,7 @@ function FlightInfo({ flight }) {
       </div>
       <div className="card-body flex flex-row text-center w-4/5">
         <div className="w-1/4 flex items-center">
-          <p className="font text-4xl">{flight.departure.iata}</p>
+          <p className="font text-4xl">{flight.origin.iata}</p>
         </div>
         <div className="w-2/4 flex flex-row items-center">
           <p className="bg-black h-1 w-[20%]" />
@@ -17,7 +17,7 @@ function FlightInfo({ flight }) {
           <p className="bg-black h-1 w-[60%]" />
         </div>
         <div className="w-1/4 flex items-center">
-          <p className="font text-4xl">{flight.arrival.iata}</p>
+          <p className="font text-4xl">{flight.destination.iata}</p>
         </div>
       </div>
     </div>

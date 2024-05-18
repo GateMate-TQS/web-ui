@@ -11,37 +11,13 @@ import "../css/flight.css";
 function Flight(props) {
   const location = useLocation();
   const flightIata = location.state?.flightIata;
-  const token = localStorage.getItem("token");
-  const [flightInfo, setFlightInfo] = useState({
-    flightIata: "AA123",
-    airlineName: "American Airlines",
-    departure: {
-      name: "Guarulhos International Airport",
-      terminal: "Terminal 3",
-      gate: "A1",
-      delay: "10 minutes",
-      scheduled: "2021-10-10T10:00:00",
-      estimated: "2021-10-10T10:10:00",
-      actual: "2021-10-10T10:10:00",
-      iata: "GRU",
-    },
-    arrival: {
-      name: "Miami International Airport",
-      terminal: "Terminal 1",
-      gate: "B2",
-      delay: "5 minutes",
-      scheduled: "2021-10-10T15:00:00",
-      estimated: "2021-10-10T15:05:00",
-      actual: "2021-10-10T15:05:00",
-      iata: "MIA",
-    },
-  });
+  const [flightInfo, setFlightInfo] = useState();
   const [flightInfoNotFound, setflightInfoNotFound] = useState(false);
 
   const fetchFlightInfo = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/flight/" + flightIata,
+        "http://localhost:8080/api/flight/flights/" + flightIata,
         {
           method: "GET",
         }
@@ -50,6 +26,7 @@ function Flight(props) {
       const responseContent = await response.json();
       if (response.status === 200) {
         console.log("FLight info found");
+        console.log(responseContent);
         setFlightInfo(responseContent);
         setflightInfoNotFound(false);
       } else if (response.status === 404) {
@@ -64,9 +41,9 @@ function Flight(props) {
     }
   };
 
-  /* useEffect(() => {
+  useEffect(() => {
     fetchFlightInfo();
-  }, []); */
+  }, []);
 
   return (
     <>
@@ -90,7 +67,7 @@ function Flight(props) {
               <div className="bg-sky-950 text-white flex flex-col items-center justify-center mx-5">
                 <div className="mt-7">
                   <p className="text-4xl">
-                    {flightInfo.departure.iata} - {flightInfo.arrival.iata}
+                    {flightInfo.origin.iata} - {flightInfo.destination.iata}
                   </p>
                 </div>
                 <div className="mt-2 mb-16">
@@ -107,18 +84,24 @@ function Flight(props) {
                   <p className="text-center text-4xl font-bold mb-5">
                     Departure
                   </p>
-                  <FlightInfoTable flight={flightInfo.departure} />
+                  <FlightInfoTable flight={flightInfo.origin} />
+                </div>
+                <div className="overflow-x-auto w-1/3">
+                  <p className="text-center text-4xl font-bold mb-5">
+                    Live Data
+                  </p>
+                  <FlightLiveDataTable flight={flightInfo.liveData} />
                 </div>
                 <div className="overflow-x-auto w-1/3 mr-10">
                   <p className="text-center text-4xl font-bold mb-5">Arrival</p>
-                  <FlightInfoTable flight={flightInfo.arrival} />
+                  <FlightInfoTable flight={flightInfo.destination} />
                 </div>
               </div>
               <div className="flex justify-center mb-10">
                 <Link
-                  to={`/ticketPurchase/${flightInfo.iata}`}
-                  key={flightInfo.iata}
-                  state={{ flightIata: flightInfo.iata }}
+                  to={`/ticketPurchase/${flightInfo.flightIata}`}
+                  key={flightInfo.flightIata}
+                  state={{ flightIata: flightInfo.flightIata }}
                 >
                   <button className="btn btn-primary">Purchase Ticket</button>
                 </Link>
