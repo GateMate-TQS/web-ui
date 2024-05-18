@@ -9,6 +9,7 @@ import Checkin from "./pages/Checkin";
 import AdminPage from "./pages/AdminPage";
 import TicketPurchase from "./pages/TicketPurchase";
 import PurchaseConfirmation from "./pages/PurchaseConfirmation";
+import FlightTracker from "./pages/FlightTracker";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           Component={UserSubscribedFlights}
         ></Route>
         <Route path="/admin" Component={AdminPage}></Route>
+        <Route path="/flighttracker" Component={FlightTracker}></Route>
       </Routes>
     </BrowserRouter>
   );

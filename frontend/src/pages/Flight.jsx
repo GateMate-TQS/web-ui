@@ -97,15 +97,17 @@ function Flight(props) {
                   <FlightInfoTable flight={flightInfo.destination} />
                 </div>
               </div>
-              <div className="flex justify-center mb-10">
-                <Link
-                  to={`/ticketPurchase/${flightInfo.flightIata}`}
-                  key={flightInfo.flightIata}
-                  state={{ flightIata: flightInfo.flightIata }}
-                >
-                  <button className="btn btn-primary">Purchase Ticket</button>
-                </Link>
-              </div>
+              {flightInfo.liveData == null && (
+                <div className="flex justify-center mb-10">
+                  <Link
+                    to={`/ticketPurchase/${flightInfo.flightIata}`}
+                    key={flightInfo.flightIata}
+                    state={{ flightIata: flightInfo.flightIata }}
+                  >
+                    <button className="btn btn-primary">Purchase Ticket</button>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </div>
