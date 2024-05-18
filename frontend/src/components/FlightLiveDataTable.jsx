@@ -33,17 +33,17 @@ function FlightLiveDataTable({ flight }) {
             </tr>
             <tr className="bg-base-200">
               <th>Horizontal Speed</th>
-              {flight.speed == null && <td>Unavailable information</td>}
-              {flight.speed != null && <td>{flight.speed}</td>}
+              {flight.speedHorizontal == null && (
+                <td>Unavailable information</td>
+              )}
+              {flight.speedHorizontal != null && (
+                <td>{flight.speedHorizontal}</td>
+              )}
             </tr>
             <tr>
               <th>Vertical Speed</th>
-              {flight.vertical_speed == null && (
-                <td>Unavailable information</td>
-              )}
-              {flight.vertical_speed != null && (
-                <td>{flight.vertical_speed}</td>
-              )}
+              {flight.speedVertical == null && <td>Unavailable information</td>}
+              {flight.speedVertical != null && <td>{flight.speedVertical}</td>}
             </tr>
           </tbody>
         </table>
