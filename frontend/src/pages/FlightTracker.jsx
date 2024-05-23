@@ -12,7 +12,7 @@ function FlightTracker() {
   const [flights, setFlights] = useState([]);
   const [flightsNotFound, setFlightsNotFound] = useState(false);
   const [flightsUrl, setFlightsUrl] = useState(
-    "http://localhost:8080/api/flight/activeFlights"
+    "http://localhost/api/flight/activeFlights"
   );
 
   const fetchAllFlights = useCallback(async (url) => {
@@ -61,12 +61,12 @@ function FlightTracker() {
       to: "",
       company: "",
     });
-    setFlightsUrl("http://localhost:8080/api/flight/activeFlights");
+    setFlightsUrl("http://localhost/api/flight/activeFlights");
     fetchAllFlights(flightsUrl);
   }
 
   async function handleSearch() {
-    var url = "http://localhost:8080/api/flight/activeFlights?";
+    var url = "http://localhost/api/flight/activeFlights?";
     if (filter.from != "") {
       url += `from=${filter.from}&`;
     }

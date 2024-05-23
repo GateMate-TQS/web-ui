@@ -9,7 +9,7 @@ function AllFlights() {
   const [flights, setFlights] = useState([]);
   const [flightsNotFound, setFlightsNotFound] = useState(false);
   const [flightsUrl, setFlightsUrl] = useState(
-    "http://localhost:8080/api/flight/scheduledFlights"
+    "http://localhost/api/flight/scheduledFlights"
   );
 
   const fetchAllFlights = useCallback(async (url) => {
@@ -58,12 +58,12 @@ function AllFlights() {
       to: "",
       company: "",
     });
-    setFlightsUrl("http://localhost:8080/api/flight/scheduledFlights");
+    setFlightsUrl("http://localhost/api/flight/scheduledFlights");
     fetchAllFlights(flightsUrl);
   }
 
   async function handleSearch() {
-    var url = "http://localhost:8080/api/flight/scheduledFlights?";
+    var url = "http://localhost/api/flight/scheduledFlights?";
     if (filter.from != "") {
       url += `from=${filter.from}&`;
     }
