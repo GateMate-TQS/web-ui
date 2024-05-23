@@ -39,7 +39,7 @@ function TicketPurchase() {
     const urlParts = window.location.pathname.split("/");
     const id = urlParts[urlParts.length - 1];
 
-    const ticketUrl = `http://localhost:8080/api/flight/flights/${id}`;
+    const ticketUrl = `http://localhost/api/flight/flights/${id}`;
     fetchTicket(ticketUrl);
   }, []);
 
