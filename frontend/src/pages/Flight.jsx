@@ -17,7 +17,7 @@ function Flight(props) {
   const fetchFlightInfo = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/flight/flights/" + flightIata,
+        "http://localhost/api/flight/flights/" + flightIata,
         {
           method: "GET",
         }
