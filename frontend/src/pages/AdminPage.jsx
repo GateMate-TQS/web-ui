@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import Footer from "../components/Footer";
@@ -13,6 +13,63 @@ function AdminPage() {
     numberOfBags: 0,
     bagWeights: [],
   });
+  const [flightsUrl, setFlightsUrl] = useState(
+    "http://localhost/api/flight/scheduledFlights"
+  );
+  const [flights, setFlights] = useState([]);
+  const [flightsNotFound, setFlightsNotFound] = useState(false);
+
+  const fetchAllFlights = useCallback(async (url) => {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+
+      const responseContent = await response.json();
+      if (response.status === 200) {
+        console.log(responseContent);
+        setFlights(responseContent);
+        setFlightsNotFound(false);
+      } else if (response.status === 404) {
+        setFlights(null);
+        setFlightsNotFound(true);
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+      setFlights(null);
+      setFlightsNotFound(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAllFlights(flightsUrl);
+
+    const id = setInterval(() => fetchAllFlights(flightsUrl), 3000);
+
+    return () => clearInterval(id);
+  }, [fetchAllFlights, flightsUrl]);
+
+  const [filter, setFilter] = useState({
+    flightIata: "",
+  });
+
+  function resetFilters() {
+    setFilter({
+      flightIata: "",
+    });
+    setFlightsUrl("http://localhost/api/flight/scheduledFlights");
+    fetchAllFlights(flightsUrl);
+  }
+
+  async function handleSearch() {
+    var url = "http://localhost/api/flight/scheduledFlights?";
+    if (filter.flightIata != "") {
+      url += `flightIata=${filter.flightIata}&`;
+    }
+
+    setFlightsUrl(url);
+    fetchAllFlights(url);
+  }
 
   const handleBagWeightChange = (index, value) => {
     if (isNaN(value)) {
@@ -129,54 +186,101 @@ function AdminPage() {
                     name="flightIata"
                     id="flightIata"
                     placeholder=" Flight Iata"
+                    value={filter.flightIata}
+                    onChange={(e) =>
+                      setFilter({ ...filter, flightIata: e.target.value })
+                    }
                   />
                 </div>
                 <div className="w-1/5 ml-1">
-                  <button className="w-full bg-blue-700 rounded justify-center items-center inline-flex px-12 py-2 text-center text-white text-base font-bold leading-normal">
+                  <button
+                    className="w-full bg-blue-700 rounded justify-center items-center inline-flex px-12 py-2 text-center text-white text-base font-bold leading-normal"
+                    onClick={() => handleSearch()}
+                  >
                     Search
+                  </button>
+                </div>
+                <div className="w-1/5 ml-1">
+                  <button
+                    className="w-full bg-gray-400 rounded justify-center items-center inline-flex px-6 py-2 text-center text-white text-base font-bold leading-normal"
+                    onClick={() => resetFilters()}
+                  >
+                    Clear Filters
                   </button>
                 </div>
               </div>
               <div>
-                <div className="collapse collapse-arrow bg-base-200 mb-2">
-                  <input type="radio" name="my-accordion-2" />
-                  <div className="collapse-title text-3xl font-medium">
-                    Flight 1
+                {flightsNotFound && (
+                  <div
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto w-1/2 h-10 text-center flex items-center justify-center mt-10"
+                    role="alert"
+                  >
+                    <strong className="font-bold">Flights not found!</strong>
                   </div>
-                  <div className="collapse-content bg-white rounded-lg shadow-lg">
-                    <p className="text-lg">From: Lagos</p>
-                    <p className="text-lg">To: Abuja</p>
-                    <p className="text-lg">Departure: 10:00</p>
-                    <p className="text-lg">Arrival: 11:00</p>
-                    <p className="text-lg">Price: $100</p>
+                )}
+
+                {flights.map((flight) => (
+                  <div
+                    key={flight.flightIata}
+                    className="collapse collapse-arrow bg-base-200 mb-2"
+                  >
+                    <input type="radio" name="my-accordion-2" />
+                    <div className="collapse-title text-3xl font-medium">
+                      {flight.flightIata}
+                    </div>
+                    <div className="collapse-content bg-white rounded-lg shadow-lg">
+                      <ul>
+                        <ul>
+                          <strong>Airport Departure</strong>
+                          <div className="ml-10 mb-5">
+                            <li>Iata: {flight.origin.iata}</li>
+                            <li>Icao: {flight.origin.icao}</li>
+                            <li>Name: {flight.origin.name}</li>
+                            <li>Delay: {flight.origin.delay}</li>
+                            <li>Scheduled: {flight.origin.scheduled}</li>
+                            <li>Estimated: {flight.origin.estimated}</li>
+                            <li>Actual: {flight.origin.actual}</li>
+                            <li>Gate: {flight.origin.gate}</li>
+                            <li>Terminal: {flight.origin.terminal}</li>
+                          </div>
+                        </ul>
+                        <ul>
+                          <strong>Airport Destination</strong>
+                          <div className="ml-10 mb-5">
+                            <li>Iata: {flight.destination.iata}</li>
+                            <li>Icao: {flight.destination.icao}</li>
+                            <li>Name: {flight.destination.name}</li>
+                            <li>Delay: {flight.destination.delay}</li>
+                            <li>Scheduled: {flight.destination.scheduled}</li>
+                            <li>Estimated: {flight.destination.estimated}</li>
+                            <li>Actual: {flight.destination.actual}</li>
+                            <li>Gate: {flight.destination.gate}</li>
+                            <li>Terminal: {flight.destination.terminal}</li>
+                          </div>
+                        </ul>
+                        <ul>
+                          <strong>Aircraft</strong>
+                          <div className="ml-10 mb-5">
+                            <li>Type: {flight.aircraft.aircraftType}</li>
+                            <li>
+                              Seats occupied:{" "}
+                              {flight.aircraft.seats.occuped.length / 2}
+                            </li>
+                          </div>
+                        </ul>
+                        <li>
+                          <strong>Airline:</strong> {flight.airline}
+                        </li>
+                        <li>
+                          <strong>Number:</strong> {flight.flightNumber}
+                        </li>
+                        <li>
+                          <strong>Status:</strong> {flight.status}
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <div className="collapse collapse-arrow bg-base-200 mb-2">
-                  <input type="radio" name="my-accordion-2" />
-                  <div className="collapse-title text-3xl font-medium">
-                    Flight 2
-                  </div>
-                  <div className="collapse-content bg-white rounded-lg shadow-lg">
-                    <p className="text-lg">From: Lagos</p>
-                    <p className="text-lg">To: Abuja</p>
-                    <p className="text-lg">Departure: 10:00</p>
-                    <p className="text-lg">Arrival: 11:00</p>
-                    <p className="text-lg">Price: $100</p>
-                  </div>
-                </div>
-                <div className="collapse collapse-arrow bg-base-200">
-                  <input type="radio" name="my-accordion-2" />
-                  <div className="collapse-title text-3xl font-medium">
-                    Flight 3
-                  </div>
-                  <div className="collapse-content bg-white rounded-lg shadow-lg">
-                    <p className="text-lg">From: Lagos</p>
-                    <p className="text-lg">To: Abuja</p>
-                    <p className="text-lg">Departure: 10:00</p>
-                    <p className="text-lg">Arrival: 11:00</p>
-                    <p className="text-lg">Price: $100</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           )}

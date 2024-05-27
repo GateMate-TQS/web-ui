@@ -6,11 +6,40 @@ import Cookies from "js-cookie";
 
 function Navbar() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(!!Cookies.get("token"));
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const fetchUserDetails = async (token) => {
+    try {
+      const response = await fetch("http://localhost/api/user/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accessToken: token,
+        }),
+      });
+
+      const responseContent = await response.json();
+      if (response.status === 200) {
+        if (responseContent.role === "ADMIN") {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+      } else {
+        console.error("Erro:", response);
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+    }
+  };
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    setLoggedIn(!!token); // Set loggedIn state based on the presence of token
+    if (loggedIn) {
+      fetchUserDetails(Cookies.get("token"));
+    }
   }, []);
 
   const handleLogout = async () => {
@@ -55,6 +84,13 @@ function Navbar() {
                       My Tickets
                     </button>
                   </Link>
+                  {isAdmin && (
+                    <Link to="/admin">
+                      <button className="block px-4 py-2 text-blue-600 hover:bg-gray-200 w-full text-left transition duration-300 ease-in-out">
+                        Admin Page
+                      </button>
+                    </Link>
+                  )}
                   <button
                     onClick={() => {
                       handleLogout();

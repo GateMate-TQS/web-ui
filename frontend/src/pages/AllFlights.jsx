@@ -20,12 +20,9 @@ function AllFlights() {
 
       const responseContent = await response.json();
       if (response.status === 200) {
-        console.log("Flights found");
-        console.log(responseContent);
         setFlights(responseContent);
         setFlightsNotFound(false);
       } else if (response.status === 404) {
-        console.error("Flights not found");
         setFlights(null);
         setFlightsNotFound(true);
       }
