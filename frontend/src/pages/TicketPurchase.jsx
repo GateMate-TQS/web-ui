@@ -2,8 +2,13 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PurchaseForm from "../components/PurchaseForm";
+import Cookies from "js-cookie";
 
 function TicketPurchase() {
+  if (!Cookies.get("token")) {
+    window.location.href = "/login";
+  }
+
   const [ticket, setTicket] = useState();
   const [departureDay, setDepartureDay] = useState(null);
   const [departureTime, setDepartureTime] = useState(null);

@@ -31,7 +31,7 @@ function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:8085/api/v1/auth/signup", {
+      const response = await fetch("http://localhost/api/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,9 +50,9 @@ function Register() {
       } else if (response.status === 400) {
         console.error(responseContent);
         setRegisterError(responseContent);
-      } else if (response.status === 409) {
+      } else {
         console.error(responseContent);
-        setRegisterError(responseContent);
+        setRegisterError("An error occurred. Please try again later.");
       }
     } catch (error) {
       console.error("Error:", error);

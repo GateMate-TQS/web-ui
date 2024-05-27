@@ -9,13 +9,11 @@ function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     setLoggedIn(!!token); // Set loggedIn state based on the presence of token
   }, []);
 
   const handleLogout = async () => {
-    console.log("Logging out");
-    localStorage.removeItem("token");
     Cookies.remove("token");
     setLoggedIn(false); // Update loggedIn state after logout
   };
@@ -52,9 +50,9 @@ function Navbar() {
               </button>
               {dropdownVisible && (
                 <div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-md z-50">
-                  <Link to="/UserSubscribedFlights">
+                  <Link to="/UserTickets">
                     <button className="block px-4 py-2 text-blue-600 hover:bg-gray-200 w-full text-left transition duration-300 ease-in-out">
-                      Subscribed Flights
+                      My Tickets
                     </button>
                   </Link>
                   <button

@@ -4,11 +4,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FlightCard from "../components/FlightCard";
 
-function UserSubscribedFlights() {
-  const token = localStorage.getItem("token");
-  const [subscribedPlanes, setSubscribedPlanes] = useState([]);
+function UserTickets() {
+  const [userTickets, setUserTickets] = useState([]);
 
-  const fetchSubscribedPlanes = async (token) => {
+  const fetchUserTickets = async (token) => {
     try {
       const response = await fetch(
         "http://localhost:8080/api/user/subscribed_flights",
@@ -25,22 +24,22 @@ function UserSubscribedFlights() {
 
       if (response.status === 200) {
         const planesData = await response.json();
-        setSubscribedPlanes(planesData);
+        setUserTickets(planesData);
       } else if (response.status === 401) {
         localStorage.removeItem("token");
         localStorage.setItem("invalidToken", true);
         window.location.href = "/login";
       } else if (response.status === 204) {
-        setSubscribedPlanes([]);
+        setUserTickets([]);
       }
     } catch (error) {
       console.error("Erro:", error);
     }
   };
 
-  useEffect(() => {
-    fetchSubscribedPlanes(token);
-  }, [token]);
+  /* useEffect(() => {
+    fetchUserTickets(token);
+  }, [token]); */
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -50,20 +49,20 @@ function UserSubscribedFlights() {
 
       <div className="flex-1 p-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Voos Subscritos</h2>
+          <h2 className="text-2xl font-bold mb-4">My Tickets</h2>
           <div>
-            {subscribedPlanes.length > 0 &&
-              subscribedPlanes.map((flight) => (
+            {userTickets.length > 0 &&
+              userTickets.map((ticket) => (
                 <Link
-                  to={`/flightInfo/${flight.flightIata}`}
-                  key={flight.flightIata}
-                  state={{ flightIata: flight.flightIata }}
+                  to={`/flightInfo/${ticket.flightIata}`}
+                  key={ticket.flightIata}
+                  state={{ flightIata: ticket.flightIata }}
                 >
-                  <FlightCard flight={flight} />
+                  <FlightCard flight={ticket} />
                 </Link>
               ))}
-            {subscribedPlanes.length === 0 && (
-              <p className="text-xl">Não tem voos subscritos</p>
+            {userTickets.length === 0 && (
+              <p className="text-xl">You don't have tickets!</p>
             )}
           </div>
         </div>
@@ -76,4 +75,4 @@ function UserSubscribedFlights() {
   );
 }
 
-export default UserSubscribedFlights;
+export default UserTickets;

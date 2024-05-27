@@ -39,9 +39,9 @@ function AllFlights() {
   useEffect(() => {
     fetchAllFlights(flightsUrl);
 
-    /* const id = setInterval(() => fetchAllFlights(flightsUrl), 3000);
+    const id = setInterval(() => fetchAllFlights(flightsUrl), 3000);
 
-    return () => clearInterval(id); */
+    return () => clearInterval(id);
   }, [fetchAllFlights, flightsUrl]);
 
   const [filter, setFilter] = useState({

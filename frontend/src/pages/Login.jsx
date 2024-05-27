@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -6,14 +6,12 @@ import image1 from "../assets/login/1.jpeg";
 import Cookies from "js-cookie";
 
 function Login() {
-  if (localStorage.getItem("token")) {
-    window.location.href = "/";
-  }
-
-  const [invalidToken, setInvalidToken] = useState(
-    localStorage.getItem("invalidToken")
-  );
-  localStorage.removeItem("invalidToken");
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      window.location.href = "/";
+    }
+  }, []);
 
   const [loginError, setLoginError] = useState(null);
 
@@ -29,10 +27,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setInvalidToken(null);
-
     try {
-      const response = await fetch("http://localhost:8085/api/v1/auth/login", {
+      const response = await fetch("http://localhost/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,15 +41,11 @@ function Login() {
 
       const responseContent = await response.json();
       if (response.status === 200) {
-        // Save token in cookies and localStorage
-        console.log(responseContent.accessToken);
-        Cookies.set("token", responseContent.accessToken);
-        localStorage.setItem("token", responseContent.accessToken);
+        Cookies.set("token", responseContent.accessToken, { expires: 1 });
         setLoginError(null);
         window.location.href = "/";
-      } else if (response.status === 401) {
-        console.error(responseContent);
-        setLoginError(responseContent);
+      } else {
+        setLoginError("Invalid email or password");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -73,16 +65,6 @@ function Login() {
             <div className="text-blue-800 text-8xl font-bold mb-4">Login</div>
           </div>
         </div>
-        {invalidToken != null && (
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto w-1/2 h-10 text-center flex items-center justify-center mt-10"
-            role="alert"
-          >
-            <strong className="font-bold">
-              Your session has expired. Please login again.
-            </strong>
-          </div>
-        )}
         {loginError && (
           <div
             className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto w-1/2 h-10 text-center flex items-center justify-center mt-10"
