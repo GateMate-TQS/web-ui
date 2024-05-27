@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import Footer from "../components/Footer";
+import Cookies from "js-cookie";
 
 function AdminPage() {
   const [flightsInfo, setFlightsInfo] = useState(true);
@@ -70,6 +71,11 @@ function AdminPage() {
     setFlightsUrl(url);
     fetchAllFlights(url);
   }
+
+  const handleLogout = async () => {
+    Cookies.remove("token");
+    window.location.href = "/";
+  };
 
   const handleBagWeightChange = (index, value) => {
     if (isNaN(value)) {
@@ -162,7 +168,12 @@ function AdminPage() {
           <div className="flex-none">
             <div className="menu menu-horizontal flex items-center">
               <div className="ml-2 text-2xl relative">
-                <button className="block px-4 py-2 text-red-500 hover:bg-white rounded-md w-full text-left transition duration-300 ease-in-out">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                  className="block px-4 py-2 text-red-500 hover:bg-white rounded-md w-full text-left transition duration-300 ease-in-out"
+                >
                   Logout
                 </button>
               </div>
