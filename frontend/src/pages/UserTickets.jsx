@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import FlightCard from "../components/FlightCard";
+import Cookies from "js-cookie";
+import FlightCardUserTickets from "../components/FlightCardUserTickets";
 
 function UserTickets() {
   const [userTickets, setUserTickets] = useState([]);
+  const [userDetails, setUserDetails] = useState(
+    JSON.parse(Cookies.get("user"))
+  );
 
-  const fetchUserTickets = async (token) => {
+  const fetchUserTickets = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/user/subscribed_flights",
+        "http://localhost/api/payment/transactions_by_user/" +
+          userDetails.username,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-          }),
+          method: "GET",
         }
       );
 
+      const responseContent = await response.json();
       if (response.status === 200) {
-        const planesData = await response.json();
-        setUserTickets(planesData);
+        console.log(responseContent);
+        setUserTickets(responseContent);
       } else if (response.status === 401) {
         localStorage.removeItem("token");
         localStorage.setItem("invalidToken", true);
@@ -37,9 +36,9 @@ function UserTickets() {
     }
   };
 
-  /* useEffect(() => {
-    fetchUserTickets(token);
-  }, [token]); */
+  useEffect(() => {
+    fetchUserTickets();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -53,13 +52,7 @@ function UserTickets() {
           <div>
             {userTickets.length > 0 &&
               userTickets.map((ticket) => (
-                <Link
-                  to={`/flightInfo/${ticket.flightIata}`}
-                  key={ticket.flightIata}
-                  state={{ flightIata: ticket.flightIata }}
-                >
-                  <FlightCard flight={ticket} />
-                </Link>
+                <FlightCardUserTickets key={ticket.id} ticket={ticket} />
               ))}
             {userTickets.length === 0 && (
               <p className="text-xl">You don't have tickets!</p>

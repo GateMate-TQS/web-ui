@@ -8,7 +8,6 @@ import UserTickets from "./pages/UserTickets";
 import Checkin from "./pages/Checkin";
 import AdminPage from "./pages/AdminPage";
 import TicketPurchase from "./pages/TicketPurchase";
-import PurchaseConfirmation from "./pages/PurchaseConfirmation";
 import FlightTracker from "./pages/FlightTracker";
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
         <Route path="/flightInfo/:id" element={<Flight />} />
         <Route path="/check-in-online" Component={Checkin} />
         <Route path="/ticketPurchase/:id" element={<TicketPurchase />} />
-        <Route path="/PurchaseConfirmation" Component={PurchaseConfirmation} />
         <Route path="/UserTickets" Component={UserTickets}></Route>
         <Route path="/admin" Component={AdminPage}></Route>
         <Route path="/flighttracker" Component={FlightTracker}></Route>

@@ -23,10 +23,12 @@ function Navbar() {
 
       const responseContent = await response.json();
       if (response.status === 200) {
-        if (responseContent.role === "ADMIN") {
+        var role = responseContent.role;
+        var username = responseContent.username;
+        var id = responseContent.id;
+        Cookies.set("user", JSON.stringify({ role, username, id }));
+        if (role === "ADMIN") {
           setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
         }
       } else {
         console.error("Erro:", response);
@@ -60,9 +62,6 @@ function Navbar() {
       </div>
       <div className="flex-none">
         <div className="menu menu-horizontal flex items-center">
-          <div className="px-4 text-2xl">
-            <Link to="/check-in-online">Check-in</Link>
-          </div>
           <div className="px-4 text-2xl">
             <Link to="/allflights">All Flights</Link>
           </div>

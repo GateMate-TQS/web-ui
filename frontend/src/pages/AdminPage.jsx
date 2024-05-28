@@ -275,7 +275,8 @@ function AdminPage() {
                             <li>Type: {flight.aircraft.aircraftType}</li>
                             <li>
                               Seats occupied:{" "}
-                              {flight.aircraft.seats.occuped.length / 2}
+                              {flight.aircraft.seats.occuped.replace(/,/g, "")
+                                .length / 2}
                             </li>
                           </div>
                         </ul>
