@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import AllFlights from "./pages/AllFlights";
 import Flight from "./pages/Flight";
 import UserTickets from "./pages/UserTickets";
-import Checkin from "./pages/Checkin";
 import AdminPage from "./pages/AdminPage";
 import TicketPurchase from "./pages/TicketPurchase";
 import FlightTracker from "./pages/FlightTracker";
@@ -19,7 +18,6 @@ function App() {
         <Route path="/login" Component={Login} />
         <Route path="/allflights" Component={AllFlights} />
         <Route path="/flightInfo/:id" element={<Flight />} />
-        <Route path="/check-in-online" Component={Checkin} />
         <Route path="/ticketPurchase/:id" element={<TicketPurchase />} />
         <Route path="/UserTickets" Component={UserTickets}></Route>
         <Route path="/admin" Component={AdminPage}></Route>
