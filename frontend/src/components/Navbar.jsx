@@ -47,6 +47,7 @@ function Navbar() {
   const handleLogout = async () => {
     Cookies.remove("token");
     setLoggedIn(false); // Update loggedIn state after logout
+    window.location.href = "/";
   };
 
   const toggleDropdown = () => {
