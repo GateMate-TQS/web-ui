@@ -7,13 +7,6 @@ import Cookies from "js-cookie";
 function AdminPage() {
   const [flightsInfo, setFlightsInfo] = useState(true);
   const [checkin, setCheckin] = useState(false);
-  const [passengerInfo, setPassengerInfo] = useState({
-    name: "",
-    passengerBI: "",
-    checkInTime: "",
-    numberOfBags: 0,
-    bagWeights: [],
-  });
   const [flightsUrl, setFlightsUrl] = useState(
     "http://localhost/api/flight/scheduledFlights"
   );
@@ -77,6 +70,14 @@ function AdminPage() {
     window.location.href = "/";
   };
 
+  const [passengerInfo, setPassengerInfo] = useState({
+    ticketid: "",
+    name: "",
+    flightIata: "",
+    numberOfBags: 0,
+    bagWeights: [],
+  });
+
   const handleBagWeightChange = (index, value) => {
     if (isNaN(value)) {
       value = 0;
@@ -91,15 +92,46 @@ function AdminPage() {
     });
   };
 
+  const handleCheckin = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost/api/flight/checkin/create?id=${user.id}&iataFlight=${ticket.iataFlight}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Check-in successful");
+      } else {
+        console.error("Check-in failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost/api/payment/update_transaction/${ticket.id}`,
+        {
+          method: "PUT",
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Checked-in");
+      } else {
+        console.error("Checked-in failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const handleSubmitCheckIn = (event) => {
     event.preventDefault();
 
     let hasErrors = false;
-
-    if (passengerInfo.passengerBI.toString().length != 9) {
-      alert("BI number must be have 9 digits.");
-      hasErrors = true;
-    }
 
     if (passengerInfo.numberOfBags > 6) {
       alert("Number of bags cannot be negative.");
@@ -113,8 +145,8 @@ function AdminPage() {
 
     if (
       passengerInfo.name === "" ||
-      passengerInfo.passengerBI === "" ||
-      passengerInfo.checkInTime === ""
+      passengerInfo.flightIata === "" ||
+      passengerInfo.ticketid === ""
     ) {
       alert("Please fill in all fields.");
       hasErrors = true;
@@ -125,12 +157,14 @@ function AdminPage() {
       console.log("Passenger Info:", passengerInfo);
       event.target.reset();
       setPassengerInfo({
+        ticketid: "",
         name: "",
-        passengerBI: "",
-        checkInTime: "",
+        flightIata: "",
         numberOfBags: 0,
         bagWeights: [],
       });
+
+      handleCheckin();
     }
   };
 
@@ -306,6 +340,25 @@ function AdminPage() {
               <form onSubmit={handleSubmitCheckIn} className="space-y-4">
                 <div className="flex flex-col">
                   <label htmlFor="name" className="text-lg font-medium">
+                    Ticket ID:
+                  </label>
+                  <input
+                    type="ticketid"
+                    id="ticketid"
+                    name="ticketid"
+                    value={passengerInfo.ticketid}
+                    onChange={(e) =>
+                      setPassengerInfo((prevState) => ({
+                        ...prevState,
+                        ticketid: e.target.value,
+                      }))
+                    }
+                    required
+                    className="border border-gray-300 rounded-md px-4 py-2"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="name" className="text-lg font-medium">
                     Name:
                   </label>
                   <input
@@ -324,48 +377,18 @@ function AdminPage() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="passengerBI" className="text-lg font-medium">
-                    BI:
+                  <label htmlFor="name" className="text-lg font-medium">
+                    Flight Iata:
                   </label>
                   <input
                     type="text"
-                    id="passengerBI"
-                    name="passengerBI"
-                    value={passengerInfo.passengerBI}
+                    id="flightIata"
+                    name="flightIata"
+                    value={passengerInfo.flightIata}
                     onChange={(e) =>
                       setPassengerInfo((prevState) => ({
                         ...prevState,
-                        passengerBI: e.target.value,
-                      }))
-                    }
-                    required
-                    className="border border-gray-300 rounded-md px-4 py-2"
-                  />
-                  {passengerInfo.passengerBI.toString().length > 9 && (
-                    <p className="text-red-600">BI number have 9 digits.</p>
-                  )}
-                  {passengerInfo.passengerBI.toString().length < 9 &&
-                    passengerInfo.passengerBI.toString().length > 0 && (
-                      <p className="text-red-600">
-                        Add more{" "}
-                        {9 - passengerInfo.passengerBI.toString().length}{" "}
-                        digit(s)
-                      </p>
-                    )}
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="checkInTime" className="text-lg font-medium">
-                    Check-in Time:
-                  </label>
-                  <input
-                    type="datetime-local"
-                    id="checkInTime"
-                    name="checkInTime"
-                    value={passengerInfo.checkInTime}
-                    onChange={(e) =>
-                      setPassengerInfo((prevState) => ({
-                        ...prevState,
-                        checkInTime: e.target.value,
+                        flightIata: e.target.value,
                       }))
                     }
                     required
