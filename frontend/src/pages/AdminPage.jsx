@@ -93,15 +93,21 @@ function AdminPage() {
   };
 
   const handleCheckin = async () => {
+    var userid;
     try {
-      const response = await fetch(
-        `http://localhost/api/flight/checkin/create?id=${user.id}&iataFlight=${ticket.iataFlight}`,
-        {
-          method: "POST",
-        }
-      );
+      const response = await fetch(`http://localhost/api/user/userId`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login: passengerInfo.name,
+        }),
+      });
 
+      const responseContent = await response.json();
       if (response.status === 200) {
+        userid = responseContent.id;
         console.log("Check-in successful");
       } else {
         console.error("Check-in failed");
@@ -112,16 +118,32 @@ function AdminPage() {
 
     try {
       const response = await fetch(
-        `http://localhost/api/payment/update_transaction/${ticket.id}`,
+        `http://localhost/api/flight/checkin/create?userId=${userid}&iataFlight=${passengerInfo.flightIata}`,
         {
-          method: "PUT",
+          method: "POST",
         }
       );
 
       if (response.status === 200) {
-        console.log("Checked-in");
+        console.log("Check-in successful");
+        try {
+          const response = await fetch(
+            `http://localhost/api/payment/update_transaction/${passengerInfo.ticketid}`,
+            {
+              method: "PUT",
+            }
+          );
+
+          if (response.status === 200) {
+            console.log("Checked-in");
+          } else {
+            console.error("Checked-in failed");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
       } else {
-        console.error("Checked-in failed");
+        console.error("Check-in failed");
       }
     } catch (error) {
       console.error("Error:", error);

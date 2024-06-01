@@ -47,7 +47,7 @@ function UserTickets() {
       </div>
 
       <div className="flex-1 p-8">
-        <div className="text-center">
+        <div>
           <h2 className="text-2xl font-bold mb-4">My Tickets</h2>
           <div>
             {userTickets.length > 0 &&
