@@ -24,7 +24,6 @@ function TicketPurchase() {
       const responseContent = await response.json();
       if (response.status === 200) {
         console.log("Ticket found");
-        console.log(responseContent);
         setTicket(responseContent);
       } else if (response.status === 404) {
         console.error("Ticket not found");
@@ -37,6 +36,7 @@ function TicketPurchase() {
   };
 
   const purchaseTicket = async () => {
+    console.log("Purchasing ticket");
     try {
       const response = await fetch(
         "http://localhost/api/payment/create_transaction",
@@ -53,10 +53,10 @@ function TicketPurchase() {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         window.location.href = "/UserTickets";
-      } else if (response.status === 404) {
-        console.error("Ticket not purchased");
+      } else if (response.status === 400) {
+        console.error("Error:", response);
       }
     } catch (error) {
       console.error("Error:", error);

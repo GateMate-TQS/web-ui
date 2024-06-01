@@ -21,10 +21,8 @@ function FlightCardUserTickets({ ticket }) {
 
       const responseContent = await response.json();
       if (response.status === 200) {
-        console.log("Ticket found");
         setflight(responseContent);
       } else if (response.status === 404) {
-        console.error("Ticket not found");
         setflight(null);
       }
     } catch (error) {
@@ -56,13 +54,23 @@ function FlightCardUserTickets({ ticket }) {
         `http://localhost/api/payment/update_transaction/${ticket.id}`,
         {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userEmail: userDetails.username,
+            iataFlight: ticket.iataFlight,
+            status: "PAYED",
+          }),
         }
       );
 
       if (response.status === 200) {
         console.log("Checked-in");
-      } else {
-        console.error("Checked-in failed");
+      } else if (response.status === 404) {
+        console.error("Transaction not found");
+      } else if (response.status === 400) {
+        console.error("Transaction already checked-in");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -81,15 +89,14 @@ function FlightCardUserTickets({ ticket }) {
       );
 
       const responseContent = await response.json();
-      console.log("ola");
-      console.log(responseContent);
       if (response.status === 200) {
         if (responseContent.status === "CHECKEDIN") {
           setCheckin(true);
         }
-        console.log("Checked-in 2");
-      } else {
-        console.error("Checked-in failed");
+      } else if (response.status === 404) {
+        console.error(responseContent);
+      } else if (response.status === 400) {
+        console.error(responseContent);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -97,17 +104,17 @@ function FlightCardUserTickets({ ticket }) {
 
     try {
       const response = await fetch(
-        `http://localhost/api/flight/checkin/${ticket.id}`,
+        `http://localhost/api/flight/checkin/tickets/${ticket.id}`,
         {
           method: "GET",
         }
       );
 
-      const responseContent = await response.json();
       if (response.status === 200) {
+        const responseContent = await response.json();
         setSeat(responseContent.seat);
-      } else {
-        console.error("Checked-in failed");
+      } else if (response.status === 404) {
+        console.error("Not checked-in");
       }
     } catch (error) {
       console.error("Error:", error);

@@ -13,8 +13,7 @@ function UserTickets() {
   const fetchUserTickets = async () => {
     try {
       const response = await fetch(
-        "http://localhost/api/payment/transactions_by_user/" +
-          userDetails.username,
+        `http://localhost/api/payment/transactions_by_user/${userDetails.username}`,
         {
           method: "GET",
         }
@@ -22,17 +21,14 @@ function UserTickets() {
 
       const responseContent = await response.json();
       if (response.status === 200) {
-        console.log(responseContent);
         setUserTickets(responseContent);
-      } else if (response.status === 401) {
-        localStorage.removeItem("token");
-        localStorage.setItem("invalidToken", true);
-        window.location.href = "/login";
-      } else if (response.status === 204) {
-        setUserTickets([]);
+      } else if (response.status === 404) {
+        console.log("No tickets found");
+      } else {
+        console.error("Error:", responseContent);
       }
     } catch (error) {
-      console.error("Erro:", error);
+      console.error("Error:", error);
     }
   };
 

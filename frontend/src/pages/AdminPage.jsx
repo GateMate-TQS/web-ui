@@ -131,6 +131,14 @@ function AdminPage() {
             `http://localhost/api/payment/update_transaction/${passengerInfo.ticketid}`,
             {
               method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userEmail: passengerInfo.name,
+                iataFlight: passengerInfo.flightIata,
+                status: "PAYED",
+              }),
             }
           );
 
