@@ -13,7 +13,7 @@ function FlightCardUserTickets({ ticket }) {
   const fetchTicket = async () => {
     try {
       const response = await fetch(
-        `http://localhost/api/flight/flights/${ticket.iataFlight}`,
+        `http://deti-tqs-04.ua.pt/api/flight/flights/${ticket.iataFlight}`,
         {
           method: "GET",
         }
@@ -34,7 +34,7 @@ function FlightCardUserTickets({ ticket }) {
   const handleCheckin = async () => {
     try {
       const response = await fetch(
-        `http://localhost/api/flight/checkin/create?userId=${userDetails.id}&iataFlight=${ticket.iataFlight}`,
+        `http://deti-tqs-04.ua.pt/api/flight/checkin/create?userId=${userDetails.id}&iataFlight=${ticket.iataFlight}`,
         {
           method: "POST",
         }
@@ -51,7 +51,7 @@ function FlightCardUserTickets({ ticket }) {
 
     try {
       const response = await fetch(
-        `http://localhost/api/payment/update_transaction/${ticket.id}`,
+        `http://deti-tqs-04.ua.pt/api/payment/update_transaction/${ticket.id}`,
         {
           method: "PUT",
           headers: {
@@ -82,7 +82,7 @@ function FlightCardUserTickets({ ticket }) {
   const checkCheckedIn = async () => {
     try {
       const response = await fetch(
-        `http://localhost/api/payment/${ticket.id}`,
+        `http://deti-tqs-04.ua.pt/api/payment/${ticket.id}`,
         {
           method: "GET",
         }
@@ -104,7 +104,7 @@ function FlightCardUserTickets({ ticket }) {
 
     try {
       const response = await fetch(
-        `http://localhost/api/flight/checkin/tickets/${ticket.id}`,
+        `http://deti-tqs-04.ua.pt/api/flight/checkin/tickets/${ticket.id}`,
         {
           method: "GET",
         }

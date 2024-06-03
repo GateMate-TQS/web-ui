@@ -8,7 +8,7 @@ function AdminPage() {
   const [flightsInfo, setFlightsInfo] = useState(true);
   const [checkin, setCheckin] = useState(false);
   const [flightsUrl, setFlightsUrl] = useState(
-    "http://localhost/api/flight/scheduledFlights"
+    "http://deti-tqs-04.ua.pt/api/flight/scheduledFlights"
   );
   const [flights, setFlights] = useState([]);
   const [flightsNotFound, setFlightsNotFound] = useState(false);
@@ -51,12 +51,12 @@ function AdminPage() {
     setFilter({
       flightIata: "",
     });
-    setFlightsUrl("http://localhost/api/flight/scheduledFlights");
+    setFlightsUrl("http://deti-tqs-04.ua.pt/api/flight/scheduledFlights");
     fetchAllFlights(flightsUrl);
   }
 
   async function handleSearch() {
-    var url = "http://localhost/api/flight/scheduledFlights?";
+    var url = "http://deti-tqs-04.ua.pt/api/flight/scheduledFlights?";
     if (filter.flightIata != "") {
       url += `flightIata=${filter.flightIata}&`;
     }
@@ -95,7 +95,7 @@ function AdminPage() {
   const handleCheckin = async () => {
     var userid;
     try {
-      const response = await fetch(`http://localhost/api/user/userId`, {
+      const response = await fetch(`http://deti-tqs-04.ua.pt/api/user/userId`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +118,7 @@ function AdminPage() {
 
     try {
       const response = await fetch(
-        `http://localhost/api/flight/checkin/create?userId=${userid}&iataFlight=${passengerInfo.flightIata}`,
+        `http://deti-tqs-04.ua.pt/api/flight/checkin/create?userId=${userid}&iataFlight=${passengerInfo.flightIata}`,
         {
           method: "POST",
         }
@@ -128,7 +128,7 @@ function AdminPage() {
         console.log("Check-in successful");
         try {
           const response = await fetch(
-            `http://localhost/api/payment/update_transaction/${passengerInfo.ticketid}`,
+            `http://deti-tqs-04.ua.pt/api/payment/update_transaction/${passengerInfo.ticketid}`,
             {
               method: "PUT",
               headers: {

@@ -12,7 +12,7 @@ function FlightTracker() {
   const [flights, setFlights] = useState([]);
   const [flightsNotFound, setFlightsNotFound] = useState(false);
   const [flightsUrl, setFlightsUrl] = useState(
-    "http://localhost/api/flight/activeFlights"
+    "http://deti-tqs-04.ua.pt/api/flight/activeFlights"
   );
 
   const fetchAllFlights = useCallback(async (url) => {
@@ -61,12 +61,12 @@ function FlightTracker() {
       to: "",
       company: "",
     });
-    setFlightsUrl("http://localhost/api/flight/activeFlights");
+    setFlightsUrl("http://deti-tqs-04.ua.pt/api/flight/activeFlights");
     fetchAllFlights(flightsUrl);
   }
 
   async function handleSearch() {
-    var url = "http://localhost/api/flight/activeFlights?";
+    var url = "http://deti-tqs-04.ua.pt/api/flight/activeFlights?";
     if (filter.from != "") {
       url += `from=${filter.from}&`;
     }

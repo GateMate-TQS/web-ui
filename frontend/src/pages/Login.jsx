@@ -28,7 +28,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost/api/user/login", {
+      const response = await fetch("http://deti-tqs-04.ua.pt/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -11,7 +11,7 @@ function Navbar() {
 
   const fetchUserDetails = async (token) => {
     try {
-      const response = await fetch("http://localhost/api/user/user", {
+      const response = await fetch("http://deti-tqs-04.ua.pt/api/user/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

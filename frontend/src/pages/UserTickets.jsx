@@ -13,7 +13,7 @@ function UserTickets() {
   const fetchUserTickets = async () => {
     try {
       const response = await fetch(
-        `http://localhost/api/payment/transactions_by_user/${userDetails.username}`,
+        `http://deti-tqs-04.ua.pt/api/payment/transactions_by_user/${userDetails.username}`,
         {
           method: "GET",
         }

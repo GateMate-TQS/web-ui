@@ -39,7 +39,7 @@ function TicketPurchase() {
     console.log("Purchasing ticket");
     try {
       const response = await fetch(
-        "http://localhost/api/payment/create_transaction",
+        "http://deti-tqs-04.ua.pt/api/payment/create_transaction",
         {
           method: "POST",
           headers: {
@@ -68,7 +68,7 @@ function TicketPurchase() {
     const urlParts = window.location.pathname.split("/");
     const id = urlParts[urlParts.length - 1];
 
-    const ticketUrl = `http://localhost/api/flight/flights/${id}`;
+    const ticketUrl = `http://deti-tqs-04.ua.pt/api/flight/flights/${id}`;
     fetchTicket(ticketUrl);
     const user = JSON.parse(Cookies.get("user"));
     setUserDetails(user);
